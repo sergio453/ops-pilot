@@ -1,0 +1,89 @@
+{
+  "services": [
+    {
+      "id": "payments",
+      "name": "payments",
+      "tier": "tier1"
+    },
+    {
+      "id": "checkout",
+      "name": "checkout",
+      "tier": "tier1"
+    },
+    {
+      "id": "catalog",
+      "name": "catalog",
+      "tier": "tier2"
+    },
+    {
+      "id": "notifications",
+      "name": "notifications",
+      "tier": "tier2"
+    },
+    {
+      "id": "auth",
+      "name": "auth",
+      "tier": "tier1"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "alert-001",
+      "service": "payments",
+      "title": "Erro de autorização de cartão",
+      "severity": "critical",
+      "status": "firing"
+    },
+    {
+      "id": "alert-002",
+      "service": "checkout",
+      "title": "Latência acima do SLA",
+      "severity": "high",
+      "status": "firing"
+    },
+    {
+      "id": "alert-003",
+      "service": "auth",
+      "title": "Pico de falhas de login",
+      "severity": "medium",
+      "status": "firing"
+    },
+    {
+      "id": "alert-004",
+      "service": "catalog",
+      "title": "Falha intermitente na busca",
+      "severity": "medium",
+      "status": "resolved"
+    },
+    {
+      "id": "alert-005",
+      "service": "notifications",
+      "title": "Atraso na fila de e-mails",
+      "severity": "low",
+      "status": "resolved"
+    },
+    {
+      "id": "alert-006",
+      "service": "payments",
+      "title": "Timeout de webhook externo",
+      "severity": "high",
+      "status": "resolved"
+    }
+  ],
+  "incidents": [],
+  "runbooks": [
+    {
+      "service": "checkout",
+      "content": "1. Validar status do gateway de pagamento.\n2. Conferir taxa de erro na API de carrinho.\n3. Aplicar fallback de checkout simplificado."
+    },
+    {
+      "service": "payments",
+      "content": "1. Revisar erros 5xx de adquirente.\n2. Verificar filas de captura.\n3. Acionar circuito de contingência para autorização."
+    },
+    {
+      "service": "auth",
+      "content": "1. Verificar saúde do provedor de identidade.\n2. Checar taxa de falha por região.\n3. Invalidar cache de sessões degradadas."
+    }
+  ],
+  "nextIncidentId": 1
+}
