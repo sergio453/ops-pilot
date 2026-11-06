@@ -46,6 +46,20 @@ class TimeoutError extends Error {
   }
 }
 
+function safeErrorDetails(error: unknown) {
+  if (!(error instanceof Error)) {
+    return { name: typeof error };
+  }
+
+  const details: { name: string; code?: string; status?: number; causeName?: string } = {
+    name: error.name,
+  };
+  if ("code" in error && typeof error.code === "string") details.code = error.code;
+  if ("status" in error && typeof error.status === "number") details.status = error.status;
+  if ("cause" in error && error.cause instanceof Error) details.causeName = error.cause.name;
+  return details;
+}
+
 type StrategyFactory = () => ReasoningStrategy;
 type StrategyRegistry = Record<string, StrategyFactory>;
 
@@ -220,6 +234,10 @@ export function createApp(options?: ServerOptions) {
         historyMessages: historyMessages.length, memoryHits: memoryContext.length });
       res.status(200).json(responseBody);
     } catch (error: unknown) {
+      console.error("Chat request failed", {
+        requestId: session?.requestId ?? res.locals.requestId,
+        ...safeErrorDetails(error),
+      });
       let persistenceFailed = error instanceof TracePersistenceError;
       try {
         session?.finish({ status: error instanceof TimeoutError ? "timeout" : "error", finishedAt: new Date().toISOString(),

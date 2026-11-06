@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "tsx src/index.ts",
     "dev:env": "node --env-file=.env --import tsx src/index.ts",
+    "dev:backend": "npm run dev:http",
+    "dev:backend:env": "npm run dev:http:env",
+    "dev:frontend": "npm --prefix web run dev",
     "dev:http": "tsx src/http/server.ts",
     "dev:http:env": "node --env-file=.env --import tsx src/http/server.ts",
     "arena": "tsx src/arena.ts",
